@@ -1,0 +1,114 @@
+name: Run Regression
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Test run environment'
+        required: true
+        default: 'dev'
+  repository_dispatch:
+    event_type: $EVENT_TYPE$
+
+env:
+  ARTIFACTORY_EDGE_USERNAME_REF: ${{ secrets.ARTIFACTORY_EDGE_USERNAME }}
+  ARTIFACTORY_EDGE_TOKEN_REF:  ${{ secrets.ARTIFACTORY_EDGE_TOKEN }}
+
+jobs:
+  health_check:
+    name: Health Check
+    runs-on: [ kubernetes ]
+    steps:
+      - name: Run Health Check
+        run: |
+          curl -X GET -H "Content-Type: application/json" -k https://customer-platform.central-dev-cust.kpsazc.dgtl.kroger.com/groups/.well-known/health-check
+
+  build:
+    name: Build
+    needs: health_check
+    runs-on: [ self-hosted, kubernetes, on-prem ]
+    container:
+      image: docker-remote.registry.kroger.com/maven:3.8.2-jdk-11
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Run karate API Test
+        run: |
+          mvn clean test --settings settings.xml -Dtest=RegressionRunner -DauthValue=${{ secrets.GROUPS_AUTH }} -Dkarate.env=${{ github.event.client_payload.Environment || github.event.inputs.environment || 'dev' }} -DKAFKA_CREDENTIALS=${{ secrets.KAFKA_CREDENTIALS }} -DTEST_BOOTSTRAP_SERVERS=${{ secrets.TEST_BOOTSTRAP_SERVERS }} -DTEST_SCHEMA_REGISTRY_URL=${{ secrets.TEST_SCHEMA_REGISTRY_URL }} -DSTAGE_BOOTSTRAP_SERVERS=${{ secrets.STAGE_BOOTSTRAP_SERVERS }} -DSTAGE_SCHEMA_REGISTRY_URL=${{ secrets.STAGE_SCHEMA_REGISTRY_URL }}
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Karate Test Result            # Name of the check run which will be created
+          path: "**/target/karate-reports/*.xml"    # Path to test results
+          reporter: java-junit        # Format of test results
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Karate Cucumber Reports
+          path: ./target/cucumber-html-reports
+
+      - name: Upload results to Qmetry
+        if: always()
+        run: >-
+          mvn exec:java --settings settings.xml -DsuiteName="Groups Regression Test"
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          check_name: Karate JUnit Test Report
+          report_paths: "**/target/karate-reports/*.xml"
+
+  code_quality:
+    name: Code_quality
+    needs: build
+    if: always()
+    runs-on: [ self-hosted, kubernetes, on-prem ]
+    container:
+      image: docker-remote.registry.kroger.com/maven:3.8.2-jdk-11
+    steps:
+      - name: checkout scanner
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Maven build
+        run: mvn clean test-compile --settings settings.xml
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: 'http://sonar.kroger.com/sonar'
+
+      - name: Result of sonarqube scan
+        run: |
+          SONAR_REPORT_INDEX=$(cat sonar-project.properties | grep -i sonar.projectKey | awk -F"=" '{print $2}' | xargs)
+          echo "Report is available at http://sonar.kroger.com/sonar/project/issues?branch=${GITHUB_REF##*/}&id=$SONAR_REPORT_INDEX"

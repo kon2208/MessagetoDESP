@@ -1,0 +1,208 @@
+{
+    "eventHeader": {
+        "id": "35c60189-409b-4ca2-b60c-49605340c6a0",
+        "time": 1718812726,
+        "type": "SyncOrder",
+        "source": "M3"
+    },
+    "salesOrderHeader": {
+        "tradingPartnerId": null,
+        "billingDivision": null,
+        "documentId": "0300001429",
+        "revisionId": null,
+        "alternateDocumentId": "779280",
+        "documentDateTime": null,
+        "documentReference": null,
+        "purchaseOrderNumber": null,
+        "description": null,
+        "notes": null,
+        "actionCode": "Add",
+        "origin": "MFG",
+        "messageType": "SO",
+        "buyingCustomer": {
+            "partyId": "DC414",
+            "partyName": null,
+            "partyNumber": null,
+            "partyReference": null,
+            "dunsNumber": null,
+            "scacNumber": null,
+            "location": null,
+            "contact": null
+        },
+        "shipToCustomer": {
+            "partyId": "DC414",
+            "partyName": "Cincinnati",
+            "partyNumber": null,
+            "partyReference": null,
+            "dunsNumber": null,
+            "scacNumber": null,
+            "location": {
+                "attentionOfName": null,
+                "addressLine1": "98 Glendale Milford Rd",
+                "addressLine2": null,
+                "addressLine3": "Cincinnati OH 45215",
+                "addressLine4": "United States",
+                "cityName": "Cincinnati",
+                "stateCode": "OH",
+                "countyCode": null,
+                "countryCode": "US",
+                "postalCode": "45215",
+                "locReference": null
+            },
+            "contact": null
+        },
+        "billToCustomer": null,
+        "shipFromParty": {
+            "plantCode": null,
+            "locationCode": "130",
+            "facilityName": "130",
+            "dunsNumber": null
+        },
+        "carrrierParty": null,
+        "transportationTerm": null,
+        "paymentTerms": "003",
+        "paymentMethodCode": null,
+        "prepaidIndicator": null,
+        "distributedCharge": null,
+        "salesPersonReference": null,
+        "orderTypeCode": null,
+        "earliestDeliveryDateTime": null,
+        "requiredDeliveryDateTime": null,
+        "isPartialShipmentAllowed": null,
+        "isDropShipmentAllowed": null,
+        "isEarlyShipmentAllowed": null,
+        "currencyCode": null,
+        "subTotalAmount": null,
+        "totalAmount": null,
+        "salesOrderLines": [
+            {
+                "lineNumber": null,
+                "alternateLineNumber": null,
+                "description": null,
+                "notes": [],
+                "orderedItem": {
+                    "itemNumber": null,
+                    "partnerItemNumber": "K06760",
+                    "caseUPC": null,
+                    "eachUPC": null,
+                    "gtin": null,
+                    "description": "12/16OZ KRO MED SALSA",
+                    "itemReference": null
+                },
+                "orderedItemUOM": "CA",
+                "orderedQuantity": "450",
+                "currencyCode": null,
+                "unitPrice": null,
+                "unitPretaxAmount": null,
+                "extendedAmount": null,
+                "totalAmount": null,
+                "requiredDeliveryDateTime": {
+                    "value": "2024-06-30T00:00:00Z",
+                    "timezone": null
+                },
+                "promisedDeliveryDateTime": null,
+                "transportationTerm": null,
+                "distributedCharge": null,
+                "shipFromParty": {
+                    "partyId": null,
+                    "partyName": null,
+                    "partyNumber": null,
+                    "partyReference": null,
+                    "dunsNumber": null,
+                    "scacNumber": null,
+                    "location": {
+                        "attentionOfName": null,
+                        "addressLine1": "1034 Depot St.",
+                        "addressLine2": null,
+                        "addressLine3": "Cincinnati OH 45204",
+                        "addressLine4": "United States",
+                        "cityName": "Cincinnati",
+                        "stateCode": "OH",
+                        "countyCode": null,
+                        "countryCode": "US",
+                        "postalCode": "45204",
+                        "locReference": null
+                    },
+                    "contact": null
+                },
+                "classificationCode": null,
+                "isPartialShipmentAllowed": null,
+                "isDropShipmentAllowed": null,
+                "isEarlyShipmentAllowed": null,
+                "grossWeight": null,
+                "volume": null,
+                "commodityCode": "Unspecified"
+            },
+            {
+                "lineNumber": null,
+                "alternateLineNumber": null,
+                "description": null,
+                "notes": [],
+                "orderedItem": {
+                    "itemNumber": null,
+                    "partnerItemNumber": "K97410",
+                    "caseUPC": null,
+                    "eachUPC": null,
+                    "gtin": null,
+                    "description": "12/30 OZ KRO MAYO W/OLIVE OIL",
+                    "itemReference": null
+                },
+                "orderedItemUOM": "CA",
+                "orderedQuantity": "500",
+                "currencyCode": null,
+                "unitPrice": null,
+                "unitPretaxAmount": null,
+                "extendedAmount": null,
+                "totalAmount": null,
+                "requiredDeliveryDateTime": {
+                    "value": "2024-06-30T00:00:00Z",
+                    "timezone": null
+                },
+                "promisedDeliveryDateTime": null,
+                "transportationTerm": null,
+                "distributedCharge": null,
+                "shipFromParty": {
+                    "partyId": null,
+                    "partyName": null,
+                    "partyNumber": null,
+                    "partyReference": null,
+                    "dunsNumber": null,
+                    "scacNumber": null,
+                    "location": {
+                        "attentionOfName": null,
+                        "addressLine1": "1034 Depot St.",
+                        "addressLine2": null,
+                        "addressLine3": "Cincinnati OH 45204",
+                        "addressLine4": "United States",
+                        "cityName": "Cincinnati",
+                        "stateCode": "OH",
+                        "countyCode": null,
+                        "countryCode": "US",
+                        "postalCode": "45204",
+                        "locReference": null
+                    },
+                    "contact": null
+                },
+                "classificationCode": null,
+                "isPartialShipmentAllowed": null,
+                "isDropShipmentAllowed": null,
+                "isEarlyShipmentAllowed": null,
+                "grossWeight": null,
+                "volume": null,
+                "commodityCode": "Unspecified"
+            }
+        ],
+        "volume": {
+            "unitCode": "",
+            "value": "560.882"
+        },
+        "grossWeight": {
+            "unitCode": "Pound",
+            "value": "21119.500000"
+        },
+        "orderDate": null,
+        "groupControlNumber": null,
+        "transactionSetControlNumber": null,
+        "direction": "PSM"
+    }
+}
